@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parlay ASLAB FDM - Live Odds</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <style>
+    /* CSS styling */
+    body { font-family: sans-serif; background: #f8f8f8; padding: 20px; text-align: center; }
+    h1 { color: #222; }
+    .bet { background: white; margin: 10px auto; padding: 15px; border-radius: 10px; width: 300px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .odds-btn { background: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
+    .min-bet { font-size: 14px; color: #666; margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <h1>PARLAY ASLAB FDM - Live Odds</h1>
+
+  <div id="bets-container"></div>
+
+  <script>
+    // ===== MASUKKAN CONFIG FIREBASE DI SINI =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyDxKAH31G1o9okS1vj846Ipw68O2ihE9aA",
+      authDomain: "parlay-aslab-fdm-22.firebaseapp.com",
+      databaseURL: "https://parlay-aslab-fdm-22-default-rtdb.firebaseio.com",
+      projectId: "parlay-aslab-fdm-22",
+      storageBucket: "parlay-aslab-fdm-22.firebasestorage.app",
+      messagingSenderId: "882857776288",
+      appId: "1:882857776288:web:37945d260595b6228b65c5",
+      measurementId: "G-Y8X4GVZN47"
+    };
+
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Daftar nama taruhan
+    const names = [
+      "TONGTONG", "NIZAR", "AMIRUL", "BEJO", "JARIP",
+      "JOSHUA", "WAHYU", "WISNU BATU", "ANWAR", "ROBBY"
+    ];
+
+    const betsContainer = document.getElementById("bets-container");
+
+    // Render taruhan dan setup realtime listener dari Firebase
+    names.forEach(name => {
+      const div = document.createElement("div");
+      div.className = "bet";
+      div.innerHTML = `
+        <h3>${name}</h3>
+        <button class="odds-btn" id="btn-${name}">Loading...</button>
+        <div class="min-bet">Min Taruhan: 5K</div>
+      `;
+      betsContainer.appendChild(div);
+
+      // Listener realtime odds di Firebase
+      const oddsRef = db.ref("odds/" + name);
+      oddsRef.on("value", snapshot => {
+        const val = snapshot.val();
+        const btn = document.getElementById("btn-" + name);
+        if (val) {
+          btn.textContent = "ODDS: " + val.toFixed(2);
+        } else {
+          btn.textContent = "ODDS: 2.00";
+        }
+      });
+
+      // Saat klik tombol, update odds dan tampilkan nomor dana
+      div.querySelector("button").addEventListener("click", () => {
+        const newOdds = (Math.random() * (4.00 - 1.50) + 1.50);
+        db.ref("odds/" + name).set(newOdds);
+        alert("NO DANA: STOP JUDI IDIOT");
+      });
+    });
+  </script>
+</body>
+</html>
