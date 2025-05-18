@@ -68,28 +68,12 @@
       });
 
       // Saat klik tombol, update odds dan tampilkan nomor dana
-     div.querySelector("button").addEventListener("click", () => {
-  const oddsRef = db.ref("odds/" + name);
-
-  oddsRef.once("value").then(snapshot => {
-    let currentOdds = snapshot.val();
-
-    // Jika belum ada nilai sebelumnya, default ke 2.00
-    if (currentOdds === null || currentOdds === undefined) {
-      currentOdds = 2.00;
-    }
-
-    // Kurangi odds, minimum batas bawah 1.10
-    const decreasedOdds = Math.max(1.10, currentOdds - 0.05);
-
-    // Simpan ke Firebase
-    oddsRef.set(decreasedOdds);
-
-    // Tampilkan alert
-    alert("NO DANA: STOP JUDI IDIOT");
-  });
-});
-
+      div.querySelector("button").addEventListener("click", () => {
+        const newOdds = (Math.max() * (0.97);
+        db.ref("odds/" + name).set(newOdds);
+        alert("NO DANA: STOP JUDI IDIOT");
+      });
+    });
   </script>
 </body>
 </html>
