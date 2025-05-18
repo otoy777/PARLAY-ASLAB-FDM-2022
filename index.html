@@ -68,7 +68,7 @@
       });
 
       // Saat klik tombol, update odds dan tampilkan nomor dana
-      div.querySelector("button").addEventListener("click", () => {
+     div.querySelector("button").addEventListener("click", () => {
   const oddsRef = db.ref("odds/" + name);
 
   oddsRef.once("value").then(snapshot => {
@@ -89,8 +89,7 @@
     alert("NO DANA: STOP JUDI IDIOT");
   });
 });
-      });
-    });
+
   </script>
 </body>
 </html>
